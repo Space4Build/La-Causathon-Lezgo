@@ -4,8 +4,9 @@ import { useAccount, useApi, useAlert } from "@gear-js/react-hooks";
 import { web3FromSource } from "@polkadot/extension-dapp";
 import { ProgramMetadata } from "@gear-js/api";
 import { Button } from "@gear-js/ui";
+import { withProviders } from "@/app/account/hocs";
 
-function CreateEvent() {
+function _CreateEvent() {
   const alert = useAlert();
   const { accounts, account } = useAccount();
   const { api, isApiReady } = useApi();
@@ -37,7 +38,7 @@ function CreateEvent() {
 
   const signer = async () => {
     if (!account?.address) {
-      alert.error("No account found");
+      window.alert("No account found");
       return;
     }
 
@@ -45,12 +46,12 @@ function CreateEvent() {
       (visibleAccount) => visibleAccount.address === account.address
     );
     if (!isVisibleAccount) {
-      alert.error("Account not available to sign");
+      window.alert("Account not available to sign");
       return;
     }
 
     if (!isApiReady) {
-      alert.error("API not ready");
+      window.alert("API not ready");
       return;
     }
 
@@ -77,4 +78,4 @@ function CreateEvent() {
   return <Button text="Crear" onClick={signer} />;
 }
 
-export { CreateEvent };
+export const CreateEvent = withProviders(_CreateEvent);
